@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-	core "github.com/shjp/shjp-core"
 )
 
 // QueryService manages query requests
@@ -27,7 +26,7 @@ func (s *QueryService) url(path string) string {
 	return fmt.Sprintf("%s/%s", s.BaseURL, path)
 }
 
-func (s *QueryService) getOne(model, id string) (core.Model, error) {
+func (s *QueryService) getOne(model, id string) (map[string]interface{}, error) {
 	url := s.url(fmt.Sprintf("%s/%s", model, id))
 
 	client := &http.Client{Timeout: time.Second * 10}
@@ -42,8 +41,8 @@ func (s *QueryService) getOne(model, id string) (core.Model, error) {
 		return nil, errors.Wrap(err, fmt.Sprintf("Cannot read response body for the request to %s", url))
 	}
 
-	var result core.Model
-	if err = json.Unmarshal(body, result); err != nil {
+	var result map[string]interface{}
+	if err = json.Unmarshal(body, &result); err != nil {
 		return nil, errors.Wrap(err, fmt.Sprintf("Cannot unmarshal response body %s", string(body)))
 	}
 

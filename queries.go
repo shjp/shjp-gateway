@@ -4,6 +4,44 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
+func queryOneAnnouncementField(s *QueryService) *graphql.Field {
+	return &graphql.Field{
+		Type: AnnouncementType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.ID),
+			},
+		},
+		Resolve: queryOneResolver(s, "announcements"),
+	}
+}
+
+func queryAnnouncementsField(s *QueryService) *graphql.Field {
+	return &graphql.Field{
+		Type:    graphql.NewList(AnnouncementType),
+		Resolve: queryAllResolver(s, "announcements"),
+	}
+}
+
+func queryOneEventField(s *QueryService) *graphql.Field {
+	return &graphql.Field{
+		Type: EventType,
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.ID),
+			},
+		},
+		Resolve: queryOneResolver(s, "events"),
+	}
+}
+
+func queryEventsField(s *QueryService) *graphql.Field {
+	return &graphql.Field{
+		Type:    graphql.NewList(EventType),
+		Resolve: queryAllResolver(s, "events"),
+	}
+}
+
 func queryOneGroupField(s *QueryService) *graphql.Field {
 	return &graphql.Field{
 		Type: GroupType,
@@ -39,19 +77,5 @@ func queryUsersField(s *QueryService) *graphql.Field {
 	return &graphql.Field{
 		Type:    graphql.NewList(UserType),
 		Resolve: queryAllResolver(s, "users"),
-	}
-}
-
-func queryEventsField(s *QueryService) *graphql.Field {
-	return &graphql.Field{
-		Type:    graphql.NewList(EventType),
-		Resolve: queryAllResolver(s, "events"),
-	}
-}
-
-func queryAnnouncementsField(s *QueryService) *graphql.Field {
-	return &graphql.Field{
-		Type:    graphql.NewList(AnnouncementType),
-		Resolve: queryAllResolver(s, "announcements"),
 	}
 }

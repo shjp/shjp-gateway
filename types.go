@@ -11,7 +11,7 @@ var AnnouncementType = graphql.NewObject(graphql.ObjectConfig{
 		"id":       &graphql.Field{Type: graphql.ID},
 		"name":     &graphql.Field{Type: graphql.String},
 		"authorId": &graphql.Field{Type: graphql.String},
-		"author":   &graphql.Field{Type: UserType},
+		"creator":  &graphql.Field{Type: UserType},
 		"content":  &graphql.Field{Type: graphql.String},
 	},
 })
@@ -25,7 +25,7 @@ var EventType = graphql.NewObject(graphql.ObjectConfig{
 		"date":                 &graphql.Field{Type: graphql.DateTime},
 		"length":               &graphql.Field{Type: graphql.Int},
 		"authorId":             &graphql.Field{Type: graphql.String},
-		"creator":              &graphql.Field{Type: UserType},
+		"author":               &graphql.Field{Type: UserType},
 		"deadline":             &graphql.Field{Type: graphql.DateTime},
 		"allow_maybe":          &graphql.Field{Type: graphql.Boolean},
 		"description":          &graphql.Field{Type: graphql.String},

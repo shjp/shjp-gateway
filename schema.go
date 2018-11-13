@@ -13,12 +13,14 @@ func ConfigSchema(q *QueryService, m *MutationService) (graphql.Schema, error) {
 		Query: graphql.NewObject(graphql.ObjectConfig{
 			Name: "Query",
 			Fields: graphql.Fields{
+				"announcement":  queryOneAnnouncementField(q),
+				"announcements": queryAnnouncementsField(q),
+				"event":         queryOneEventField(q),
+				"events":        queryEventsField(q),
 				"group":         queryOneGroupField(q),
 				"groups":        queryGroupsField(q),
 				"user":          queryOneUserField(q),
 				"users":         queryUsersField(q),
-				"events":        queryEventsField(q),
-				"announcements": queryAnnouncementsField(q),
 			},
 		}),
 		Mutation: graphql.NewObject(graphql.ObjectConfig{

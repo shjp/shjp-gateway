@@ -31,7 +31,7 @@ func (g *group) ReadParams(p graphql.ResolveParams) error {
 		g.Description = description.(string)
 	}
 
-	if imageURL := p.Args["imageUrl"]; imageURL != nil {
+	if imageURL := p.Args["image_url"]; imageURL != nil {
 		g.ImageURL = imageURL.(string)
 	}
 
