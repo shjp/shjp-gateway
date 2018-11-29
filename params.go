@@ -133,8 +133,47 @@ func (e *event) ReadParams(p graphql.ResolveParams) error {
 	return nil
 }
 
-/*type user struct { core.User }
+type user struct{ core.User }
 
-func (u *User) ReadParams(p graphql.ResolveParams) error {
+func (u *user) ReadParams(p graphql.ResolveParams) error {
+	if id := p.Args["id"]; id != nil {
+		u.ID = id.(string)
+	}
 
-}*/
+	if name := p.Args["name"]; name != nil {
+		nameStr := name.(string)
+		u.Name = &nameStr
+	}
+
+	if baptismalName := p.Args["baptismalName"]; baptismalName != nil {
+		bnStr := baptismalName.(string)
+		u.BaptismalName = &bnStr
+	}
+
+	if birthday := p.Args["birthday"]; birthday != nil {
+		bStr := birthday.(string)
+		u.Birthday = &bStr
+	}
+
+	if feastday := p.Args["feastday"]; feastday != nil {
+		fdStr := feastday.(string)
+		u.Feastday = &fdStr
+	}
+
+	if lastActive := p.Args["lastActive"]; lastActive != nil {
+		laStr := lastActive.(string)
+		u.LastActive = &laStr
+	}
+
+	if email := p.Args["email"]; email != nil {
+		emailStr := email.(string)
+		u.Email = &emailStr
+	}
+
+	if password := p.Args["password"]; password != nil {
+		passwordStr := password.(string)
+		u.Password = &passwordStr
+	}
+
+	return nil
+}

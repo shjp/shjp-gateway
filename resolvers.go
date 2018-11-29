@@ -30,8 +30,8 @@ func createModelResolver(s *MutationService, typ string) graphql.FieldResolveFn 
 			params = &event{}
 		case "group":
 			params = &group{}
-		//case "user":
-		//	params = &user{}
+		case "user":
+			params = &user{}
 		default:
 			log.Println("Model type not recognized:", typ)
 		}
@@ -61,8 +61,8 @@ func updateModelResolver(s *MutationService, typ string) graphql.FieldResolveFn 
 			params = &event{}
 		case "group":
 			params = &group{}
-		//case "user":
-		//	params = &user{}
+		case "user":
+			params = &user{}
 		default:
 			log.Println("Model type not recognized:", typ)
 			return nil, fmt.Errorf("Model type not recognized: %s", typ)

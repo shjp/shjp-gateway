@@ -16,6 +16,7 @@ type graphQLPostBody struct {
 	Query string `json:"query"`
 }
 
+// GraphqlHandler handles requests made on console
 func GraphqlHandler(schema graphql.Schema) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		authToken := r.Header.Get("token")

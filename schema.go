@@ -33,8 +33,8 @@ func ConfigSchema(q *QueryService, m *MutationService) (graphql.Schema, error) {
 				"updateEvent":        mutateUpdateEventField(m),
 				"createGroup":        mutateCreateGroupField(m),
 				"updateGroup":        mutateUpdateGroupField(m),
-				//"createUser": mutateCreateUserField(m),
-				//"updateUser": mutateUpdateUserField(m),
+				"createUser":         mutateCreateUserField(m),
+				"updateUser":         mutateUpdateUserField(m),
 			},
 		}),
 		/*Subscription: graphql.NewObject(graphql.ObjectConfig{
