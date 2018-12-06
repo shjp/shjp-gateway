@@ -82,7 +82,7 @@ func mutateUpdateGroupField(s *MutationService) *graphql.Field {
 func mutateCreateUserField(s *MutationService) *graphql.Field {
 	return &graphql.Field{
 		Type:    MutationResponseType,
-		Args:    transformTypeFieldsToArgument(*UserType, "name", "email", "baptismalName", "birthday", "feastday"),
+		Args:    transformTypeFieldsToArgument(*UserType, "name", "email", "password", "baptismalName", "birthday", "feastday"),
 		Resolve: createModelResolver(s, "user"),
 	}
 }
@@ -90,7 +90,7 @@ func mutateCreateUserField(s *MutationService) *graphql.Field {
 func mutateUpdateUserField(s *MutationService) *graphql.Field {
 	return &graphql.Field{
 		Type:    MutationResponseType,
-		Args:    transformTypeFieldsToArgument(*UserType, "id", "name", "email", "baptismalName", "birthday", "feastday"),
+		Args:    transformTypeFieldsToArgument(*UserType, "id", "name", "email", "password", "baptismalName", "birthday", "feastday"),
 		Resolve: updateModelResolver(s, "user"),
 	}
 }

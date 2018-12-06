@@ -53,6 +53,7 @@ var UserType = graphql.NewObject(graphql.ObjectConfig{
 		"id":            &graphql.Field{Type: graphql.ID},
 		"name":          &graphql.Field{Type: graphql.String},
 		"email":         &graphql.Field{Type: graphql.String},
+		"password":      &graphql.Field{Type: graphql.String},
 		"baptismalName": &graphql.Field{Type: graphql.String},
 		"birthday":      &graphql.Field{Type: graphql.DateTime},
 		"feastday":      &graphql.Field{Type: graphql.DateTime},
