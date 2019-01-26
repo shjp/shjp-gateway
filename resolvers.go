@@ -6,6 +6,8 @@ import (
 
 	"github.com/graphql-go/graphql"
 	"github.com/pkg/errors"
+
+	core "github.com/shjp/shjp-core"
 )
 
 func queryOneResolver(s *QueryService, typ string) graphql.FieldResolveFn {
@@ -87,53 +89,30 @@ func updateModelResolver(s *MutationService, typ string) graphql.FieldResolveFn 
 	}
 }
 
-func login(p graphql.ResolveParams) (interface{}, error) {
-	return nil, nil
-	/*if p.Args["accountId"] == nil {
-		return nil, errors.New("accountId must be present")
-	}
-	accountID := p.Args["accountId"].(string)
+func login(s *AuthService) graphql.FieldResolveFn {
+	return func(p graphql.ResolveParams) (interface{}, error) {
+		accountType := p.Args["accountType"].(string)
 
-	if p.Args["clientId"] == nil {
-		return nil, errors.New("clientId must be present")
-	}
-	clientID := p.Args["clientId"].(string)
+		var email string
+		if p.Args["email"] != nil {
+			email = p.Args["email"].(string)
+		}
+		var password string
+		if p.Args["password"] != nil {
+			password = p.Args["password"].(string)
+		}
 
-	if p.Args["accountType"] == nil {
-		return nil, errors.New("account type must be present")
-	}
-	loginType := p.Args["accountType"].(string)
+		userPayload := core.User{
+			AccountType: &accountType,
+			Email:       &email,
+			Password:    &password,
+		}
 
-	var profileImage *string
-	if p.Args["profileImage"] == nil {
-		profileImage = nil
-	} else {
-		*profileImage = p.Args["profileImage"].(string)
-	}
+		session, err := s.Login(userPayload)
+		if err != nil {
+			return nil, errors.Wrap(err, "Failed logging in")
+		}
 
-	var nickname *string
-	if p.Args["nickname"] == nil {
-		nickname = nil
-	} else {
-		*nickname = p.Args["nickname"].(string)
+		return session, nil
 	}
-
-	m := models.NewMember()
-	switch loginType {
-	case "email":
-		m.AccountType = constant.Email
-	case "kakao":
-		m.AccountType = constant.Kakao
-	case "facebook":
-		m.AccountType = constant.Facebook
-	case "gmail":
-		m.AccountType = constant.Gmail
-	default:
-		m.AccountType = constant.Undefined
-	}
-	if m.AccountType == constant.Undefined {
-		return nil, fmt.Errorf("Cannot recognize account type %s", loginType)
-	}
-
-	return m.Login(accountID, clientID, profileImage, nickname)*/
 }

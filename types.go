@@ -52,6 +52,7 @@ var UserType = graphql.NewObject(graphql.ObjectConfig{
 	Fields: graphql.Fields{
 		"id":            &graphql.Field{Type: graphql.ID},
 		"name":          &graphql.Field{Type: graphql.String},
+		"accountType":   &graphql.Field{Type: graphql.String},
 		"email":         &graphql.Field{Type: graphql.String},
 		"password":      &graphql.Field{Type: graphql.String},
 		"baptismalName": &graphql.Field{Type: graphql.String},
@@ -65,11 +66,17 @@ var UserType = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
+// MeType defines the GraphQL type for the current user
+var MeType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "me",
+})
+
 // UserSessionType defines the GraphQL user session type
 var UserSessionType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "userSession",
 	Fields: graphql.Fields{
-		"token": &graphql.Field{Type: graphql.String},
+		"key":  &graphql.Field{Type: graphql.String},
+		"user": &graphql.Field{Type: UserType},
 	},
 })
 

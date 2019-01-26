@@ -7,6 +7,7 @@ import (
 	"github.com/graphql-go/handler"
 	"github.com/joho/godotenv"
 
+	"github.com/shjp/shjp-auth/redis"
 	"github.com/shjp/shjp-gateway"
 )
 
@@ -20,6 +21,7 @@ func main() {
 	queueHost := envVars["QUEUE_URL"]
 	queueUser := envVars["QUEUE_USER"]
 	queueExchange := envVars["QUEUE_EXCHANGE"]
+	redisHost := envVars["REDIS_URL"]
 
 	queryService, err := gateway.NewQueryService(daoHost)
 	if err != nil {
@@ -31,7 +33,15 @@ func main() {
 		log.Fatalf("Failed instantiating a mutation service: %s", err)
 		return
 	}
-	schema, err := gateway.ConfigSchema(queryService, mutationService)
+	authService, err := gateway.NewAuthService(daoHost+"/users/search", &redis.Options{
+		Network: "tcp",
+		Address: redisHost,
+	})
+	if err != nil {
+		log.Fatalf("Failed instantiating an auth service: %s", err)
+		return
+	}
+	schema, err := gateway.ConfigSchema(queryService, mutationService, authService)
 	if err != nil {
 		log.Fatalf("Failed configuring schema: %v", err)
 		return

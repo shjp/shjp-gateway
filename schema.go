@@ -7,7 +7,7 @@ import (
 )
 
 // ConfigSchema returns the root level GraphQL schema instance
-func ConfigSchema(q *QueryService, m *MutationService) (graphql.Schema, error) {
+func ConfigSchema(q *QueryService, m *MutationService, a *AuthService) (graphql.Schema, error) {
 	log.Println("Setting up GraphQL schema...")
 	return graphql.NewSchema(graphql.SchemaConfig{
 		Query: graphql.NewObject(graphql.ObjectConfig{
@@ -26,7 +26,6 @@ func ConfigSchema(q *QueryService, m *MutationService) (graphql.Schema, error) {
 		Mutation: graphql.NewObject(graphql.ObjectConfig{
 			Name: "Mutation",
 			Fields: graphql.Fields{
-				//"login":              mutateLoginField(m),
 				"createAnnouncement": mutateCreateAnnouncementField(m),
 				"updateAnnouncement": mutateUpdateAnnouncementField(m),
 				"createEvent":        mutateCreateEventField(m),
@@ -35,6 +34,7 @@ func ConfigSchema(q *QueryService, m *MutationService) (graphql.Schema, error) {
 				"updateGroup":        mutateUpdateGroupField(m),
 				"createUser":         mutateCreateUserField(m),
 				"updateUser":         mutateUpdateUserField(m),
+				"login":              mutateLoginField(a),
 			},
 		}),
 		/*Subscription: graphql.NewObject(graphql.ObjectConfig{

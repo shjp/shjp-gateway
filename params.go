@@ -145,6 +145,11 @@ func (u *user) ReadParams(p graphql.ResolveParams) error {
 		u.Name = &nameStr
 	}
 
+	if accountType := p.Args["accountType"]; accountType != nil {
+		accountTypeStr := accountType.(string)
+		u.AccountType = &accountTypeStr
+	}
+
 	if password := p.Args["password"]; password != nil {
 		passwordStr := password.(string)
 		u.Password = &passwordStr

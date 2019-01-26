@@ -4,33 +4,6 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
-func mutateLoginField(s *MutationService) *graphql.Field {
-	return &graphql.Field{
-		Type: UserSessionType,
-		Args: graphql.FieldConfigArgument{
-			"accountId": &graphql.ArgumentConfig{
-				Type: graphql.NewNonNull(graphql.String),
-			},
-			"clientId": &graphql.ArgumentConfig{
-				Type: graphql.NewNonNull(graphql.String),
-			},
-			"accountType": &graphql.ArgumentConfig{
-				Type: graphql.NewNonNull(graphql.String),
-			},
-			"accountSecret": &graphql.ArgumentConfig{
-				Type: graphql.NewNonNull(graphql.String),
-			},
-			"profileImage": &graphql.ArgumentConfig{
-				Type: graphql.String,
-			},
-			"nickname": &graphql.ArgumentConfig{
-				Type: graphql.String,
-			},
-		},
-		Resolve: login,
-	}
-}
-
 func mutateCreateAnnouncementField(s *MutationService) *graphql.Field {
 	return &graphql.Field{
 		Type:    MutationResponseType,
@@ -82,7 +55,7 @@ func mutateUpdateGroupField(s *MutationService) *graphql.Field {
 func mutateCreateUserField(s *MutationService) *graphql.Field {
 	return &graphql.Field{
 		Type:    MutationResponseType,
-		Args:    transformTypeFieldsToArgument(*UserType, "name", "email", "password", "baptismalName", "birthday", "feastday"),
+		Args:    transformTypeFieldsToArgument(*UserType, "name", "accountType", "email", "password", "baptismalName", "birthday", "feastday"),
 		Resolve: createModelResolver(s, "user"),
 	}
 }
@@ -92,5 +65,23 @@ func mutateUpdateUserField(s *MutationService) *graphql.Field {
 		Type:    MutationResponseType,
 		Args:    transformTypeFieldsToArgument(*UserType, "id", "name", "email", "password", "baptismalName", "birthday", "feastday"),
 		Resolve: updateModelResolver(s, "user"),
+	}
+}
+
+func mutateLoginField(a *AuthService) *graphql.Field {
+	return &graphql.Field{
+		Type: UserSessionType,
+		Args: graphql.FieldConfigArgument{
+			"accountType": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"email": &graphql.ArgumentConfig{
+				Type: graphql.String,
+			},
+			"password": &graphql.ArgumentConfig{
+				Type: graphql.String,
+			},
+		},
+		Resolve: login(a),
 	}
 }
