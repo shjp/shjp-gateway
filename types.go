@@ -75,8 +75,7 @@ var MeType = graphql.NewObject(graphql.ObjectConfig{
 var UserSessionType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "userSession",
 	Fields: graphql.Fields{
-		"key":  &graphql.Field{Type: graphql.String},
-		"user": &graphql.Field{Type: UserType},
+		"key": &graphql.Field{Type: graphql.String},
 	},
 })
 
