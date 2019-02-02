@@ -6,9 +6,10 @@ docker_up: build
 	docker-compose up -d
 
 docker_update: build
-	docker build --no-cache --tag shjp_gateway_server .
-	docker run --name shjp_gateway_server -itd shjp_gateway_server
-	docker commit shjp_gateway_server sanggonlee/shjp:shjp_gateway_server
-	docker stop shjp_gateway_server
-	docker rm shjp_gateway_server
-	docker push sanggonlee/shjp:shjp_gateway_server
+	docker build --no-cache --tag shjp-gateway-server_v$(version) .
+	docker run --name shjp-gateway-server -itd shjp-gateway-server_v$(version)
+	docker commit shjp-gateway-server sanggonlee/shjp:shjp-gateway-server_v$(version)
+	docker stop shjp-gateway-server
+	docker rm shjp-gateway-server
+	docker push sanggonlee/shjp:shjp-gateway-server_v$(version)
+	rm ./shjp-gateway

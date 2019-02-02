@@ -12,6 +12,12 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
+type contextKey string
+
+const (
+	authTokenKey contextKey = "accessToken"
+)
+
 type graphQLPostBody struct {
 	Query string `json:"query"`
 }
@@ -19,7 +25,7 @@ type graphQLPostBody struct {
 // GraphqlHandler handles requests made on console
 func GraphqlHandler(schema graphql.Schema) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		authToken := r.Header.Get("token")
+		authToken := r.Header.Get("Auth-Token")
 		log.Printf("url = %+v", r.URL)
 
 		var requestString string
@@ -46,15 +52,21 @@ func GraphqlHandler(schema graphql.Schema) http.HandlerFunc {
 		result := graphql.Do(graphql.Params{
 			Schema:        schema,
 			RequestString: requestString,
-			Context:       context.WithValue(context.Background(), "token", authToken),
+			Context:       context.WithValue(context.Background(), authTokenKey, authToken),
 		})
-		if len(result.Errors) > 0 {
+		if result.HasErrors() {
 			log.Printf("graphql errors: %v", result.Errors)
+			result.Data = nil
+			errBytes, err := json.Marshal(result)
+			if err != nil {
+				SendErrorResponse(w, errors.New("Error marshaling errors"), 500)
+				return
+			}
+			SendResponse(w, string(errBytes), 500)
 			return
 		}
 
 		fmt.Printf("data = %+v\n", result.Data)
-		fmt.Printf("errors = %+v\n", result.Errors)
 
 		respJSON, err := json.Marshal(result)
 		if err != nil {

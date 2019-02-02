@@ -113,6 +113,31 @@ func login(s *AuthService) graphql.FieldResolveFn {
 			return nil, errors.Wrap(err, "Failed logging in")
 		}
 
-		return session, nil
+		ret, err := cleanseReturnObject(session)
+		if err != nil {
+			return nil, errors.Wrap(err, "Error cleansing return object")
+		}
+
+		return ret, nil
+	}
+}
+
+func me(s *AuthService) graphql.FieldResolveFn {
+	return func(p graphql.ResolveParams) (interface{}, error) {
+		token := p.Context.Value(authTokenKey)
+		if token == nil || token == "" {
+			return nil, errors.New("Missing auth token")
+		}
+		session, err := s.Authenticate(token.(string))
+		if err != nil {
+			return nil, errors.Wrap(err, "Authentication failed")
+		}
+
+		ret, err := cleanseReturnObject(&session.User)
+		if err != nil {
+			return nil, errors.Wrap(err, "Error cleansing return object")
+		}
+
+		return ret, nil
 	}
 }

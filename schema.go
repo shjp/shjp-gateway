@@ -21,6 +21,7 @@ func ConfigSchema(q *QueryService, m *MutationService, a *AuthService) (graphql.
 				"groups":        queryGroupsField(q),
 				"user":          queryOneUserField(q),
 				"users":         queryUsersField(q),
+				"me":            queryMeField(a),
 			},
 		}),
 		Mutation: graphql.NewObject(graphql.ObjectConfig{

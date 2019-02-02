@@ -79,3 +79,10 @@ func queryUsersField(s *QueryService) *graphql.Field {
 		Resolve: queryAllResolver(s, "users"),
 	}
 }
+
+func queryMeField(a *AuthService) *graphql.Field {
+	return &graphql.Field{
+		Type:    UserType,
+		Resolve: me(a),
+	}
+}

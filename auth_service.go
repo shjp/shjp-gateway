@@ -1,6 +1,7 @@
 package gateway
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 
@@ -23,6 +24,33 @@ func NewAuthService(daoURL string, sessionClientOptions auth.SessionClientOption
 	return &AuthService{
 		daoURL:               daoURL,
 		sessionClientOptions: sessionClientOptions,
+	}, nil
+}
+
+// Authenticate performs a simple authentication with the access token
+func (s *AuthService) Authenticate(token string) (*auth.UserSession, error) {
+	sessionClient, err := s.sessionClientOptions.NewClient()
+	if err != nil {
+		return nil, errors.Wrap(err, "Error creating the session client")
+	}
+
+	raw, err := sessionClient.Get(token)
+	if err != nil {
+		return nil, errors.Wrap(err, "Error retrieving user session")
+	}
+
+	if raw == nil {
+		return nil, errors.Wrap(err, "User session doesn't exist")
+	}
+
+	var u core.User
+	if err = json.Unmarshal(raw, &u); err != nil {
+		return nil, errors.Wrap(err, "Error unmarshaling to user object")
+	}
+
+	return &auth.UserSession{
+		Key:  token,
+		User: u,
 	}, nil
 }
 
