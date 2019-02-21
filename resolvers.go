@@ -24,7 +24,7 @@ func queryAllResolver(s *QueryService, typ string) graphql.FieldResolveFn {
 
 func createModelResolver(s *MutationService, typ string) graphql.FieldResolveFn {
 	return func(p graphql.ResolveParams) (interface{}, error) {
-		var params Params
+		var params ModelParams
 		switch typ {
 		case "announcement":
 			params = &announcement{}
@@ -44,7 +44,7 @@ func createModelResolver(s *MutationService, typ string) graphql.FieldResolveFn 
 
 		params.GenerateID()
 
-		resp, err := s.mutateModel(typ, params)
+		resp, err := s.mutateEntity(params)
 		if err != nil {
 			log.Println(err)
 		}
@@ -55,7 +55,7 @@ func createModelResolver(s *MutationService, typ string) graphql.FieldResolveFn 
 
 func updateModelResolver(s *MutationService, typ string) graphql.FieldResolveFn {
 	return func(p graphql.ResolveParams) (interface{}, error) {
-		var params Params
+		var params ModelParams
 		switch typ {
 		case "announcement":
 			params = &announcement{}
@@ -79,13 +79,39 @@ func updateModelResolver(s *MutationService, typ string) graphql.FieldResolveFn 
 			return nil, errors.New("ID is required for update mutation")
 		}
 
-		resp, err := s.mutateModel(typ, params)
+		resp, err := s.mutateEntity(params)
 		if err != nil {
 			log.Println(err)
 			return nil, err
 		}
 
 		return resp, err
+	}
+}
+
+func upsertRelationshipResolver(s *MutationService, typ string) graphql.FieldResolveFn {
+	return func(p graphql.ResolveParams) (interface{}, error) {
+		var params Params
+		switch typ {
+		case "group_membership":
+			params = &groupMembership{}
+		default:
+			log.Println("Relationship type not recognized:", typ)
+			return nil, fmt.Errorf("Relationship type not recognized: %s", typ)
+		}
+
+		if err := params.ReadParams(p); err != nil {
+			log.Println(err)
+			return nil, err
+		}
+
+		resp, err := s.mutateEntity(params)
+		if err != nil {
+			log.Println(err)
+			return nil, err
+		}
+
+		return resp, nil
 	}
 }
 

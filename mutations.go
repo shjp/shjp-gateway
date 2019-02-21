@@ -85,3 +85,11 @@ func mutateLoginField(a *AuthService) *graphql.Field {
 		Resolve: login(a),
 	}
 }
+
+func mutateRequestGroupJoin(s *MutationService) *graphql.Field {
+	return &graphql.Field{
+		Type:    MutationResponseType,
+		Args:    transformTypeFieldsToArgument(*GroupMembership, "group_id", "user_id", "role_id", "status"),
+		Resolve: upsertRelationshipResolver(s, "group_membership"),
+	}
+}

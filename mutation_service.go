@@ -35,7 +35,7 @@ func (s *MutationService) dispatch(m *core.Message) error {
 	return s.producer.Publish(s.exchange, m)
 }
 
-func (s *MutationService) mutateModel(typ string, p Params) (*MutationResponse, error) {
+func (s *MutationService) mutateEntity(p Params) (*MutationResponse, error) {
 	msg, err := p.Pack(core.IntentRequest, core.UpsertOperation)
 	resp := &MutationResponse{RefID: msg.Key}
 	if err != nil {

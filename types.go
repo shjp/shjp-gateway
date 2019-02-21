@@ -22,7 +22,7 @@ var EventType = graphql.NewObject(graphql.ObjectConfig{
 	Fields: graphql.Fields{
 		"id":                   &graphql.Field{Type: graphql.ID},
 		"name":                 &graphql.Field{Type: graphql.String},
-		"date":                 &graphql.Field{Type: graphql.DateTime},
+		"date":                 &graphql.Field{Type: graphql.String},
 		"length":               &graphql.Field{Type: graphql.Int},
 		"authorId":             &graphql.Field{Type: graphql.String},
 		"author":               &graphql.Field{Type: UserType},
@@ -46,6 +46,29 @@ var GroupType = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
+// GroupMembership defines the GraphQL type for group-user linking
+var GroupMembership = graphql.NewObject(graphql.ObjectConfig{
+	Name: "groupMembership",
+	Fields: graphql.Fields{
+		"group_id": &graphql.Field{Type: graphql.ID},
+		"user_id":  &graphql.Field{Type: graphql.ID},
+		"role_id":  &graphql.Field{Type: graphql.ID},
+		"status":   &graphql.Field{Type: graphql.String},
+	},
+})
+
+// UserGroup defines the GraphQL type for user's groups
+var UserGroup = graphql.NewObject(graphql.ObjectConfig{
+	Name: "userGroup",
+	Fields: graphql.Fields{
+		"id":        &graphql.Field{Type: graphql.ID},
+		"name":      &graphql.Field{Type: graphql.String},
+		"privilege": &graphql.Field{Type: graphql.Int},
+		"role_name": &graphql.Field{Type: graphql.String},
+		"status":    &graphql.Field{Type: graphql.String},
+	},
+})
+
 // UserType defines the GraphQL user type
 var UserType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "user",
@@ -58,10 +81,11 @@ var UserType = graphql.NewObject(graphql.ObjectConfig{
 		"baptismalName": &graphql.Field{Type: graphql.String},
 		"birthday":      &graphql.Field{Type: graphql.DateTime},
 		"feastday":      &graphql.Field{Type: graphql.DateTime},
-		"groups":        &graphql.Field{Type: graphql.NewList(graphql.String)},
+		"groups":        &graphql.Field{Type: graphql.NewList(UserGroup)},
 		"created":       &graphql.Field{Type: graphql.DateTime},
 		"lastActive":    &graphql.Field{Type: graphql.DateTime},
-		"roleName":      &graphql.Field{Type: graphql.String},
+		"status":        &graphql.Field{Type: graphql.String},
+		"role_name":     &graphql.Field{Type: graphql.String},
 		"privilege":     &graphql.Field{Type: graphql.Int},
 	},
 })

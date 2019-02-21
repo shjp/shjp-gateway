@@ -6,12 +6,17 @@ import (
 	core "github.com/shjp/shjp-core"
 )
 
-// Params defines interface that each model params should satisfy
+// Params defines interface that each API payload format should satisfy
 type Params interface {
+	core.Entity
+	ReadParams(graphql.ResolveParams) error
+}
+
+// ModelParams defines interface that each model params should satisfy
+type ModelParams interface {
+	Params
 	GetID() string
 	GenerateID()
-	Pack(core.Intent, core.OperationType) (*core.Message, error)
-	ReadParams(graphql.ResolveParams) error
 }
 
 type group struct{ core.Group }
@@ -184,6 +189,32 @@ func (u *user) ReadParams(p graphql.ResolveParams) error {
 		passwordStr := password.(string)
 		u.Password = &passwordStr
 	}
+
+	return nil
+}
+
+type groupMembership struct{ core.GroupMembership }
+
+func (m *groupMembership) ReadParams(p graphql.ResolveParams) error {
+	if p.Args["group_id"] == nil {
+		return errors.New("GroupID is required for group membership request")
+	}
+	m.GroupID = p.Args["group_id"].(string)
+
+	if p.Args["user_id"] == nil {
+		return errors.New("UserID is required for group membership request")
+	}
+	m.UserID = p.Args["user_id"].(string)
+
+	if p.Args["role_id"] == nil {
+		return errors.New("RoleID is required for group membership request")
+	}
+	m.RoleID = p.Args["role_id"].(string)
+
+	if p.Args["status"] == nil {
+		return errors.New("Status is required for group membership request")
+	}
+	m.Status = core.MembershipStatus(p.Args["status"].(string))
 
 	return nil
 }

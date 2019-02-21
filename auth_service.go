@@ -10,6 +10,7 @@ import (
 	"github.com/shjp/shjp-auth"
 	"github.com/shjp/shjp-auth/email"
 	core "github.com/shjp/shjp-core"
+	"github.com/shjp/shjp-core/model"
 )
 
 // AuthService manages auth requests
@@ -43,7 +44,7 @@ func (s *AuthService) Authenticate(token string) (*auth.UserSession, error) {
 		return nil, errors.Wrap(err, "User session doesn't exist")
 	}
 
-	var u core.User
+	var u model.User
 	if err = json.Unmarshal(raw, &u); err != nil {
 		return nil, errors.Wrap(err, "Error unmarshaling to user object")
 	}
