@@ -22,8 +22,8 @@ var EventType = graphql.NewObject(graphql.ObjectConfig{
 	Fields: graphql.Fields{
 		"id":                   &graphql.Field{Type: graphql.ID},
 		"name":                 &graphql.Field{Type: graphql.String},
-		"date":                 &graphql.Field{Type: graphql.String},
-		"length":               &graphql.Field{Type: graphql.Int},
+		"start":                &graphql.Field{Type: graphql.String},
+		"end":                  &graphql.Field{Type: graphql.String},
 		"authorId":             &graphql.Field{Type: graphql.String},
 		"author":               &graphql.Field{Type: UserType},
 		"deadline":             &graphql.Field{Type: graphql.DateTime},

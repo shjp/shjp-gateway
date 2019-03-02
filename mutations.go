@@ -23,7 +23,7 @@ func mutateUpdateAnnouncementField(s *MutationService) *graphql.Field {
 func mutateCreateEventField(s *MutationService) *graphql.Field {
 	return &graphql.Field{
 		Type:    MutationResponseType,
-		Args:    transformTypeFieldsToArgument(*EventType, "name", "date", "length", "authorId", "deadline", "allow_maybe", "description", "location", "location_description"),
+		Args:    transformTypeFieldsToArgument(*EventType, "name", "start", "end", "authorId", "deadline", "allow_maybe", "description", "location", "location_description"),
 		Resolve: createModelResolver(s, "event"),
 	}
 }
@@ -31,7 +31,7 @@ func mutateCreateEventField(s *MutationService) *graphql.Field {
 func mutateUpdateEventField(s *MutationService) *graphql.Field {
 	return &graphql.Field{
 		Type:    MutationResponseType,
-		Args:    transformTypeFieldsToArgument(*EventType, "id", "name", "date", "length", "authorId", "deadline", "allow_maybe", "description", "location", "location_description"),
+		Args:    transformTypeFieldsToArgument(*EventType, "id", "name", "start", "end", "authorId", "deadline", "allow_maybe", "description", "location", "location_description"),
 		Resolve: updateModelResolver(s, "event"),
 	}
 }
@@ -86,10 +86,10 @@ func mutateLoginField(a *AuthService) *graphql.Field {
 	}
 }
 
-func mutateRequestGroupJoin(s *MutationService) *graphql.Field {
+func mutateRequestGroupJoin(as *AuthService, ms *MutationService) *graphql.Field {
 	return &graphql.Field{
 		Type:    MutationResponseType,
 		Args:    transformTypeFieldsToArgument(*GroupMembership, "group_id", "user_id", "role_id", "status"),
-		Resolve: upsertRelationshipResolver(s, "group_membership"),
+		Resolve: upsertRelationshipResolver(as, ms, "group_membership"),
 	}
 }

@@ -94,13 +94,14 @@ func (e *event) ReadParams(p graphql.ResolveParams) error {
 		return errors.New("Name is required for event")
 	}
 
-	if date := p.Args["date"]; date != nil {
-		dateStr := date.(string)
-		e.Date = &dateStr
+	if start := p.Args["start"]; start != nil {
+		startStr := start.(string)
+		e.Start = &startStr
 	}
 
-	if length := p.Args["length"]; length != nil {
-		e.Length = length.(int)
+	if end := p.Args["end"]; end != nil {
+		endStr := end.(string)
+		e.End = &endStr
 	}
 
 	if creator := p.Args["creator"]; creator != nil {

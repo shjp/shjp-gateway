@@ -89,8 +89,19 @@ func updateModelResolver(s *MutationService, typ string) graphql.FieldResolveFn 
 	}
 }
 
-func upsertRelationshipResolver(s *MutationService, typ string) graphql.FieldResolveFn {
+func upsertRelationshipResolver(as *AuthService, ms *MutationService, typ string) graphql.FieldResolveFn {
 	return func(p graphql.ResolveParams) (interface{}, error) {
+		token := p.Context.Value(authTokenKey)
+		if token == nil || token == "" {
+			return nil, errors.New("Missing auth token")
+		}
+		_, err := as.Authenticate(token.(string))
+		if err != nil {
+			return nil, errors.Wrap(err, "Authentication failed")
+		}
+
+		// TODO: Authorization
+
 		var params Params
 		switch typ {
 		case "group_membership":
@@ -105,7 +116,7 @@ func upsertRelationshipResolver(s *MutationService, typ string) graphql.FieldRes
 			return nil, err
 		}
 
-		resp, err := s.mutateEntity(params)
+		resp, err := ms.mutateEntity(params)
 		if err != nil {
 			log.Println(err)
 			return nil, err

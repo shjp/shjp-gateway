@@ -36,7 +36,7 @@ func ConfigSchema(q *QueryService, m *MutationService, a *AuthService) (graphql.
 				"createUser":         mutateCreateUserField(m),
 				"updateUser":         mutateUpdateUserField(m),
 				"login":              mutateLoginField(a),
-				"requestGroupJoin":   mutateRequestGroupJoin(m),
+				"requestGroupJoin":   mutateRequestGroupJoin(a, m),
 			},
 		}),
 		/*Subscription: graphql.NewObject(graphql.ObjectConfig{
