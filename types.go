@@ -13,6 +13,7 @@ var AnnouncementType = graphql.NewObject(graphql.ObjectConfig{
 		"authorId": &graphql.Field{Type: graphql.String},
 		"creator":  &graphql.Field{Type: UserType},
 		"content":  &graphql.Field{Type: graphql.String},
+		"created":  &graphql.Field{Type: graphql.String},
 	},
 })
 
@@ -31,6 +32,27 @@ var EventType = graphql.NewObject(graphql.ObjectConfig{
 		"description":          &graphql.Field{Type: graphql.String},
 		"location":             &graphql.Field{Type: graphql.String},
 		"location_description": &graphql.Field{Type: graphql.String},
+		"created":              &graphql.Field{Type: graphql.String},
+		"rsvps":                &graphql.Field{Type: graphql.NewList(EventRSVPUserType)},
+	},
+})
+
+// EventRSVPType defines the GraphQL event RSVP type
+var EventRSVPType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "eventRSVP",
+	Fields: graphql.Fields{
+		"user_id":  &graphql.Field{Type: graphql.ID},
+		"event_id": &graphql.Field{Type: graphql.ID},
+		"rsvp":     &graphql.Field{Type: graphql.String},
+	},
+})
+
+// EventRSVPUserType defines the GraphQL event RSVP user type
+var EventRSVPUserType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "eventRSVPUser",
+	Fields: graphql.Fields{
+		"user": &graphql.Field{Type: UserType},
+		"rsvp": &graphql.Field{Type: graphql.String},
 	},
 })
 

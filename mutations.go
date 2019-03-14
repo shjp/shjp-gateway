@@ -93,3 +93,11 @@ func mutateRequestGroupJoin(as *AuthService, ms *MutationService) *graphql.Field
 		Resolve: upsertRelationshipResolver(as, ms, "group_membership"),
 	}
 }
+
+func mutateUpdateRSVPField(as *AuthService, ms *MutationService) *graphql.Field {
+	return &graphql.Field{
+		Type:    MutationResponseType,
+		Args:    transformTypeFieldsToArgument(*EventRSVPType, "user_id", "event_id", "rsvp"),
+		Resolve: upsertRelationshipResolver(as, ms, "update_rsvp"),
+	}
+}

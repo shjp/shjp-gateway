@@ -219,3 +219,24 @@ func (m *groupMembership) ReadParams(p graphql.ResolveParams) error {
 
 	return nil
 }
+
+type eventRSVP struct{ core.EventRSVP }
+
+func (r *eventRSVP) ReadParams(p graphql.ResolveParams) error {
+	if p.Args["event_id"] == nil {
+		return errors.New("event_id is required for event RSVP request")
+	}
+	r.EventID = p.Args["event_id"].(string)
+
+	if p.Args["user_id"] == nil {
+		return errors.New("user_id is required for event RSVP request")
+	}
+	r.UserID = p.Args["user_id"].(string)
+
+	if p.Args["rsvp"] == nil {
+		return errors.New("rsvp is required for event RSVP request")
+	}
+	r.RSVP = p.Args["rsvp"].(string)
+
+	return nil
+}

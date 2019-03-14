@@ -106,6 +106,8 @@ func upsertRelationshipResolver(as *AuthService, ms *MutationService, typ string
 		switch typ {
 		case "group_membership":
 			params = &groupMembership{}
+		case "update_rsvp":
+			params = &eventRSVP{}
 		default:
 			log.Println("Relationship type not recognized:", typ)
 			return nil, fmt.Errorf("Relationship type not recognized: %s", typ)
