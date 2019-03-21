@@ -161,7 +161,7 @@ func (u *user) ReadParams(p graphql.ResolveParams) error {
 		u.Password = &passwordStr
 	}
 
-	if baptismalName := p.Args["baptismalName"]; baptismalName != nil {
+	if baptismalName := p.Args["baptismal_name"]; baptismalName != nil {
 		bnStr := baptismalName.(string)
 		u.BaptismalName = &bnStr
 	}
