@@ -29,22 +29,25 @@ func GraphqlHandler(schema graphql.Schema) http.HandlerFunc {
 		log.Printf("url = %+v", r.URL)
 
 		var requestString string
-		if r.Method == http.MethodGet {
+		if r.Method == http.MethodOptions {
+			SendResponse(w, "ok", http.StatusOK)
+			return
+		} else if r.Method == http.MethodGet {
 			requestString = r.URL.Query().Get("query")
 		} else if r.Method == http.MethodPost {
 			body, err := ioutil.ReadAll(r.Body)
 			if err != nil {
-				SendErrorResponse(w, errors.New("Cannot read POST body"), 400)
+				SendErrorResponse(w, errors.New("Cannot read POST body"), http.StatusBadRequest)
 				return
 			}
 			var queryWrapper graphQLPostBody
 			if err = json.Unmarshal(body, &queryWrapper); err != nil {
-				SendErrorResponse(w, errors.New("Failed parsing POST body. Did you forget query property?"), 400)
+				SendErrorResponse(w, errors.New("Failed parsing POST body. Did you forget query property?"), http.StatusBadRequest)
 				return
 			}
 			requestString = queryWrapper.Query
 		} else {
-			SendErrorResponse(w, errors.New("Only GET and POST allowed for GraphQL request"), 400)
+			SendErrorResponse(w, errors.New("Only GET, POST and OPTIONS allowed for GraphQL request"), http.StatusBadRequest)
 			return
 		}
 		log.Printf("query = %s", requestString)
@@ -59,10 +62,10 @@ func GraphqlHandler(schema graphql.Schema) http.HandlerFunc {
 			result.Data = nil
 			errBytes, err := json.Marshal(result)
 			if err != nil {
-				SendErrorResponse(w, errors.New("Error marshaling errors"), 500)
+				SendErrorResponse(w, errors.New("Error marshaling errors"), http.StatusInternalServerError)
 				return
 			}
-			SendResponse(w, string(errBytes), 500)
+			SendResponse(w, string(errBytes), http.StatusInternalServerError)
 			return
 		}
 
@@ -71,10 +74,10 @@ func GraphqlHandler(schema graphql.Schema) http.HandlerFunc {
 		respJSON, err := json.Marshal(result)
 		if err != nil {
 			log.Printf("Error marshaling result: %s", err)
-			SendErrorResponse(w, err, 500)
+			SendErrorResponse(w, err, http.StatusInternalServerError)
 			return
 		}
 
-		SendResponse(w, string(respJSON), 200)
+		SendResponse(w, string(respJSON), http.StatusOK)
 	}
 }
