@@ -104,9 +104,9 @@ func (e *event) ReadParams(p graphql.ResolveParams) error {
 		e.End = &endStr
 	}
 
-	if creator := p.Args["creator"]; creator != nil {
-		creatorStr := creator.(string)
-		e.Creator = &creatorStr
+	if authorID := p.Args["authorId"]; authorID != nil {
+		authorIDStr := authorID.(string)
+		e.Creator = &authorIDStr
 	}
 
 	if deadline := p.Args["deadline"]; deadline != nil {
