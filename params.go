@@ -132,8 +132,10 @@ func (e *event) ReadParams(p graphql.ResolveParams) error {
 		e.LocationDescription = &ldStr
 	}
 
-	for _, gid := range p.Args["group_ids"].([]interface{}) {
-		e.GroupIDs = append(e.GroupIDs, gid.(string))
+	if gids := p.Args["group_ids"]; gids != nil {
+		for _, gid := range gids.([]interface{}) {
+			e.GroupIDs = append(e.GroupIDs, gid.(string))
+		}
 	}
 
 	return nil
