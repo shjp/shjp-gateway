@@ -79,15 +79,30 @@ var GroupMembership = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
+// GroupPermission defines the GraphQL type for user's permissions within a group
+var GroupPermission = graphql.NewObject(graphql.ObjectConfig{
+	Name: "groupPermission",
+	Fields: graphql.Fields{
+		"can_read":                &graphql.Field{Type: graphql.Boolean},
+		"can_read_members":        &graphql.Field{Type: graphql.Boolean},
+		"can_read_comments":       &graphql.Field{Type: graphql.Boolean},
+		"can_write_comments":      &graphql.Field{Type: graphql.Boolean},
+		"can_write_announcements": &graphql.Field{Type: graphql.Boolean},
+		"can_write_events":        &graphql.Field{Type: graphql.Boolean},
+		"can_edit_users":          &graphql.Field{Type: graphql.Boolean},
+	},
+})
+
 // UserGroup defines the GraphQL type for user's groups
 var UserGroup = graphql.NewObject(graphql.ObjectConfig{
 	Name: "userGroup",
 	Fields: graphql.Fields{
-		"id":        &graphql.Field{Type: graphql.ID},
-		"name":      &graphql.Field{Type: graphql.String},
-		"privilege": &graphql.Field{Type: graphql.Int},
-		"role_name": &graphql.Field{Type: graphql.String},
-		"status":    &graphql.Field{Type: graphql.String},
+		"id":          &graphql.Field{Type: graphql.ID},
+		"name":        &graphql.Field{Type: graphql.String},
+		"privilege":   &graphql.Field{Type: graphql.Int},
+		"role_name":   &graphql.Field{Type: graphql.String},
+		"status":      &graphql.Field{Type: graphql.String},
+		"permissions": &graphql.Field{Type: GroupPermission},
 	},
 })
 
