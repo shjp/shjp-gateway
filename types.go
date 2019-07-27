@@ -65,6 +65,7 @@ var GroupType = graphql.NewObject(graphql.ObjectConfig{
 		"description": &graphql.Field{Type: graphql.String},
 		"image_url":   &graphql.Field{Type: graphql.String},
 		"members":     &graphql.Field{Type: graphql.NewList(UserType)},
+		"roles":       &graphql.Field{Type: graphql.NewList(RoleType)},
 	},
 })
 
@@ -89,6 +90,7 @@ var GroupPermission = graphql.NewObject(graphql.ObjectConfig{
 		"can_write_comments":      &graphql.Field{Type: graphql.Boolean},
 		"can_write_announcements": &graphql.Field{Type: graphql.Boolean},
 		"can_write_events":        &graphql.Field{Type: graphql.Boolean},
+		"can_admin_group":         &graphql.Field{Type: graphql.Boolean},
 		"can_edit_users":          &graphql.Field{Type: graphql.Boolean},
 	},
 })
@@ -138,6 +140,18 @@ var UserSessionType = graphql.NewObject(graphql.ObjectConfig{
 	Fields: graphql.Fields{
 		"key":  &graphql.Field{Type: graphql.String},
 		"user": &graphql.Field{Type: UserType},
+	},
+})
+
+// RoleType defines the GraphQL role type
+var RoleType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "role",
+	Fields: graphql.Fields{
+		"id":          &graphql.Field{Type: graphql.String},
+		"group_id":    &graphql.Field{Type: graphql.String},
+		"name":        &graphql.Field{Type: graphql.String},
+		"privilege":   &graphql.Field{Type: graphql.Int},
+		"permissions": &graphql.Field{Type: GroupPermission},
 	},
 })
 

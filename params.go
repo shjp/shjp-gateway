@@ -209,15 +209,17 @@ func (m *groupMembership) ReadParams(p graphql.ResolveParams) error {
 	}
 	m.UserID = p.Args["user_id"].(string)
 
-	if p.Args["role_id"] == nil {
-		return errors.New("RoleID is required for group membership request")
+	roleID := p.Args["role_id"]
+	if roleID != nil {
+		m.RoleID = roleID.(string)
 	}
-	m.RoleID = p.Args["role_id"].(string)
 
-	if p.Args["status"] == nil {
-		return errors.New("Status is required for group membership request")
+	status := p.Args["status"]
+	if status != nil {
+		m.Status = core.MembershipStatus(status.(string))
+	} else {
+		m.Status = core.MembershipStatus("pending")
 	}
-	m.Status = core.MembershipStatus(p.Args["status"].(string))
 
 	return nil
 }
