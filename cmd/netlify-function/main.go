@@ -118,6 +118,12 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 func formatResponse(statusCode int, body string) *events.APIGatewayProxyResponse {
 	return &events.APIGatewayProxyResponse{
 		StatusCode: statusCode,
-		Body:       body,
+		Headers: map[string]string{
+			"Content-Type":                 "application/json",
+			"Access-Control-Allow-Origin":  "*",
+			"Access-Control-Allow-Headers": "X-Requested-With,Content-Type,Authorization,Auth-Token",
+			"Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,OPTIONS,PING",
+		},
+		Body: body,
 	}
 }
