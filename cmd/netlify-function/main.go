@@ -31,6 +31,14 @@ func main() {
 }
 
 func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, error) {
+	reqBlob, err := json.Marshal(request)
+	if err != nil {
+		log.Println("Marshalling request failed:", err)
+	}
+	log.Println("Request object ---------------------------------------------------")
+	log.Println(string(reqBlob))
+	log.Println("------------------------------------------------------------------")
+
 	authToken, ok := request.Headers["Auth-Token"]
 	// For time being, simply log and pass an empty string when auth token is not found
 	if !ok {
