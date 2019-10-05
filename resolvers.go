@@ -179,6 +179,7 @@ func me(s *AuthService) graphql.FieldResolveFn {
 		log.Println("------------------------------------------------------------------------")
 
 		token := p.Context.Value(authTokenKey)
+		log.Println("Access token = ", token)
 		if token == nil || token == "" {
 			return nil, errors.New("Missing auth token")
 		}
