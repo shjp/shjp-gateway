@@ -12,8 +12,8 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/graphql-go/graphql"
-	gateway "github.com/sanggonlee/shjp-gateway"
 	"github.com/shjp/shjp-auth/redis"
+	gateway "github.com/shjp/shjp-gateway"
 )
 
 type contextKey string
