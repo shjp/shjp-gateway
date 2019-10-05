@@ -38,7 +38,6 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 	log.Println("Request object ---------------------------------------------------")
 	log.Println(string(reqBlob))
 	log.Println("------------------------------------------------------------------")
-	log.Printf("Headers = %+v\n", request.Headers)
 
 	authToken, ok := request.Headers["auth-token"]
 	// For time being, simply log and pass an empty string when auth token is not found
@@ -98,23 +97,11 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 	}
 	log.Printf("query = %s", requestString)
 
-	p := graphql.Params{
+	result := graphql.Do(graphql.Params{
 		Schema:        schema,
 		RequestString: requestString,
 		Context:       context.WithValue(context.Background(), authTokenKey, authToken),
-	}
-	paramsBlob, err := json.Marshal(p)
-	if err != nil {
-		log.Println("Marshalling params failed:", err)
-	}
-	log.Println("Params object ---------------------------------------------------")
-	log.Println(string(paramsBlob))
-	log.Println("-----------------------------------------------------------------")
-	result := graphql.Do( /*graphql.Params{
-			Schema:        schema,
-			RequestString: requestString,
-			Context:       context.WithValue(context.Background(), authTokenKey, authToken),
-		}*/p)
+	})
 	if result.HasErrors() {
 		log.Printf("graphql errors: %v", result.Errors)
 		result.Data = nil
