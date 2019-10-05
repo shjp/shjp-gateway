@@ -1,6 +1,7 @@
 package gateway
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 
@@ -167,6 +168,16 @@ func login(s *AuthService) graphql.FieldResolveFn {
 
 func me(s *AuthService) graphql.FieldResolveFn {
 	return func(p graphql.ResolveParams) (interface{}, error) {
+		log.Println("context =", p.Context.(fmt.Stringer).String())
+
+		paramsBlob, err := json.Marshal(p)
+		if err != nil {
+			log.Println("Marshalling params failed:", err)
+		}
+		log.Println("ResolveParams object ---------------------------------------------------")
+		log.Println(string(paramsBlob))
+		log.Println("------------------------------------------------------------------------")
+
 		token := p.Context.Value(authTokenKey)
 		if token == nil || token == "" {
 			return nil, errors.New("Missing auth token")
