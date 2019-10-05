@@ -1,6 +1,7 @@
 package gateway
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 
@@ -32,6 +33,8 @@ func createModelResolver(s *MutationService, typ string) graphql.FieldResolveFn 
 			params = &event{}
 		case "group":
 			params = &group{}
+		// case "role":
+		// 	params = &role{}
 		case "user":
 			params = &user{}
 		default:
@@ -63,6 +66,8 @@ func updateModelResolver(s *MutationService, typ string) graphql.FieldResolveFn 
 			params = &event{}
 		case "group":
 			params = &group{}
+		// case "role":
+		// 	params = &role{}
 		case "user":
 			params = &user{}
 		default:
@@ -163,6 +168,14 @@ func login(s *AuthService) graphql.FieldResolveFn {
 
 func me(s *AuthService) graphql.FieldResolveFn {
 	return func(p graphql.ResolveParams) (interface{}, error) {
+		paramsBlob, err := json.Marshal(p)
+		if err != nil {
+			log.Println("Marshalling params failed:", err)
+		}
+		log.Println("ResolveParams object ---------------------------------------------------")
+		log.Println(string(paramsBlob))
+		log.Println("------------------------------------------------------------------------")
+
 		token := p.Context.Value(authTokenKey)
 		if token == nil || token == "" {
 			return nil, errors.New("Missing auth token")

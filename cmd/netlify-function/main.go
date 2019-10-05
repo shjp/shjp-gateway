@@ -97,11 +97,22 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 	}
 	log.Printf("query = %s", requestString)
 
-	result := graphql.Do(graphql.Params{
+	p := graphql.Params{
 		Schema:        schema,
 		RequestString: requestString,
 		Context:       context.WithValue(context.Background(), authTokenKey, authToken),
-	})
+	}
+	paramsBlob, err := json.Marshal(p)
+	if err != nil {
+		log.Println("Marshalling params failed:", err)
+	}
+	log.Println("Params object ---------------------------------------------------")
+	log.Println(string(paramsBlob))
+	result := graphql.Do( /*graphql.Params{
+			Schema:        schema,
+			RequestString: requestString,
+			Context:       context.WithValue(context.Background(), authTokenKey, authToken),
+		}*/p)
 	if result.HasErrors() {
 		log.Printf("graphql errors: %v", result.Errors)
 		result.Data = nil
