@@ -38,6 +38,7 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 	log.Println("Request object ---------------------------------------------------")
 	log.Println(string(reqBlob))
 	log.Println("------------------------------------------------------------------")
+	log.Printf("Headers = %+v\n", request.Headers)
 
 	authToken, ok := request.Headers["auth-token"]
 	// For time being, simply log and pass an empty string when auth token is not found
