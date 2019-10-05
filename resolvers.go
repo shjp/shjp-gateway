@@ -96,7 +96,7 @@ func updateModelResolver(s *MutationService, typ string) graphql.FieldResolveFn 
 
 func upsertRelationshipResolver(as *AuthService, ms *MutationService, typ string) graphql.FieldResolveFn {
 	return func(p graphql.ResolveParams) (interface{}, error) {
-		token := p.Context.Value(authTokenKey)
+		token := p.Context.Value(AuthTokenKey)
 		if token == nil || token == "" {
 			return nil, errors.New("Missing auth token")
 		}
@@ -178,7 +178,7 @@ func me(s *AuthService) graphql.FieldResolveFn {
 		log.Println(string(paramsBlob))
 		log.Println("------------------------------------------------------------------------")
 
-		token := p.Context.Value(authTokenKey)
+		token := p.Context.Value(AuthTokenKey)
 		log.Println("Access token = ", token)
 		if token == nil || token == "" {
 			return nil, errors.New("Missing auth token")

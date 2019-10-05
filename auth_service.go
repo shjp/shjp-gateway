@@ -7,7 +7,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/shjp/shjp-auth"
+	auth "github.com/shjp/shjp-auth"
 	"github.com/shjp/shjp-auth/email"
 	core "github.com/shjp/shjp-core"
 	"github.com/shjp/shjp-core/model"
@@ -18,6 +18,11 @@ type AuthService struct {
 	daoURL               string
 	sessionClientOptions auth.SessionClientOptions
 }
+
+const (
+	// AuthTokenKey is the key used to retrieve access token from context
+	AuthTokenKey = "accessTokenKey"
+)
 
 // NewAuthService instantiates a new auth service
 func NewAuthService(daoURL string, sessionClientOptions auth.SessionClientOptions) (*AuthService, error) {

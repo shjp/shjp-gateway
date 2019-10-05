@@ -16,12 +16,6 @@ import (
 	gateway "github.com/shjp/shjp-gateway"
 )
 
-type contextKey string
-
-const (
-	authTokenKey contextKey = "accessToken"
-)
-
 type graphQLPostBody struct {
 	Query string `json:"query"`
 }
@@ -100,7 +94,7 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 	result := graphql.Do(graphql.Params{
 		Schema:        schema,
 		RequestString: requestString,
-		Context:       context.WithValue(context.Background(), authTokenKey, authToken),
+		Context:       context.WithValue(context.Background(), gateway.AuthTokenKey, authToken),
 	})
 	if result.HasErrors() {
 		log.Printf("graphql errors: %v", result.Errors)
