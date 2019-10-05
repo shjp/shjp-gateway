@@ -168,6 +168,8 @@ func login(s *AuthService) graphql.FieldResolveFn {
 
 func me(s *AuthService) graphql.FieldResolveFn {
 	return func(p graphql.ResolveParams) (interface{}, error) {
+		log.Println("context =", p.Context.(fmt.Stringer).String())
+
 		paramsBlob, err := json.Marshal(p)
 		if err != nil {
 			log.Println("Marshalling params failed:", err)

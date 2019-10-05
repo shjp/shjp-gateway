@@ -108,6 +108,7 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 	}
 	log.Println("Params object ---------------------------------------------------")
 	log.Println(string(paramsBlob))
+	log.Println("-----------------------------------------------------------------")
 	result := graphql.Do( /*graphql.Params{
 			Schema:        schema,
 			RequestString: requestString,
