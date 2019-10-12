@@ -43,19 +43,55 @@ func (g *group) ReadParams(p graphql.ResolveParams) error {
 	return nil
 }
 
-/*type role struct{ core.Role }
+type role struct{ core.Role }
 
 func (r *role) ReadParams(p graphql.ResolveParams) error {
 	if name := p.Args["name"]; name != nil {
 		r.Name = name.(string)
 	}
 
-	if group := p.Args["group"]; group != nil {
-		r.Group = group.(string)
+	if groupID := p.Args["group_id"]; groupID != nil {
+		r.GroupID = groupID.(string)
 	}
 
+	perm := core.GroupPermission{}
+
+	if canRead := p.Args["can_read"]; canRead != nil {
+		perm.CanRead = canRead.(bool)
+	}
+
+	if canReadMembers := p.Args["can_read_members"]; canReadMembers != nil {
+		perm.CanReadMembers = canReadMembers.(bool)
+	}
+
+	if canReadComments := p.Args["can_read_comments"]; canReadComments != nil {
+		perm.CanReadComments = canReadComments.(bool)
+	}
+
+	if canWriteComments := p.Args["can_write_comments"]; canWriteComments != nil {
+		perm.CanWriteComments = canWriteComments.(bool)
+	}
+
+	if canWriteAnnouncements := p.Args["can_write_announcements"]; canWriteAnnouncements != nil {
+		perm.CanWriteAnnouncements = canWriteAnnouncements.(bool)
+	}
+
+	if canWriteEvents := p.Args["can_write_events"]; canWriteEvents != nil {
+		perm.CanWriteEvents = canWriteEvents.(bool)
+	}
+
+	if canAdminGroup := p.Args["can_admin_group"]; canAdminGroup != nil {
+		perm.CanAdminGroup = canAdminGroup.(bool)
+	}
+
+	if canEditUsers := p.Args["can_edit_users"]; canEditUsers != nil {
+		perm.CanEditUsers = canEditUsers.(bool)
+	}
+
+	r.Privilege = core.GroupPermissionToPrivilege(perm)
+
 	return nil
-}*/
+}
 
 type announcement struct{ core.Announcement }
 

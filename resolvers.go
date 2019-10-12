@@ -32,8 +32,8 @@ func createModelResolver(s *MutationService, typ string) graphql.FieldResolveFn 
 			params = &event{}
 		case "group":
 			params = &group{}
-		// case "role":
-		// 	params = &role{}
+		case "role":
+			params = &role{}
 		case "user":
 			params = &user{}
 		default:
@@ -65,8 +65,8 @@ func updateModelResolver(s *MutationService, typ string) graphql.FieldResolveFn 
 			params = &event{}
 		case "group":
 			params = &group{}
-		// case "role":
-		// 	params = &role{}
+		case "role":
+			params = &role{}
 		case "user":
 			params = &user{}
 		default:

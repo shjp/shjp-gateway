@@ -21,6 +21,19 @@ func transformTypeFieldsToArgument(o graphql.Object, fields ...string) graphql.F
 	return a
 }
 
+func transformInputTypeFieldsToArgument(o graphql.InputObject, fields ...string) graphql.FieldConfigArgument {
+	a := make(graphql.FieldConfigArgument)
+	for _, name := range fields {
+		field, ok := o.Fields()[name]
+		if !ok {
+			log.Println("Undefined GraphQL field given: ", name)
+		} else {
+			a[name] = &graphql.ArgumentConfig{Type: field.Type}
+		}
+	}
+	return a
+}
+
 func cleanseReturnObject(input interface{}) (map[string]interface{}, error) {
 	bytes, err := json.Marshal(input)
 	if err != nil {

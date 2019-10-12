@@ -12,12 +12,6 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
-type contextKey string
-
-const (
-	authTokenKey contextKey = "accessToken"
-)
-
 type graphQLPostBody struct {
 	Query string `json:"query"`
 }
@@ -55,7 +49,7 @@ func GraphqlHandler(schema graphql.Schema) http.HandlerFunc {
 		result := graphql.Do(graphql.Params{
 			Schema:        schema,
 			RequestString: requestString,
-			Context:       context.WithValue(context.Background(), authTokenKey, authToken),
+			Context:       context.WithValue(context.Background(), AuthTokenKey, authToken),
 		})
 		if result.HasErrors() {
 			log.Printf("graphql errors: %v", result.Errors)

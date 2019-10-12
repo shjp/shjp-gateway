@@ -6,7 +6,7 @@ import (
 
 // AnnouncementType defines the GraphQL announcement type
 var AnnouncementType = graphql.NewObject(graphql.ObjectConfig{
-	Name: "announcement",
+	Name: "Announcement",
 	Fields: graphql.Fields{
 		"id":       &graphql.Field{Type: graphql.ID},
 		"name":     &graphql.Field{Type: graphql.String},
@@ -19,7 +19,7 @@ var AnnouncementType = graphql.NewObject(graphql.ObjectConfig{
 
 // EventType defines the GraphQL event type
 var EventType = graphql.NewObject(graphql.ObjectConfig{
-	Name: "event",
+	Name: "Event",
 	Fields: graphql.Fields{
 		"id":                   &graphql.Field{Type: graphql.ID},
 		"name":                 &graphql.Field{Type: graphql.String},
@@ -39,7 +39,7 @@ var EventType = graphql.NewObject(graphql.ObjectConfig{
 
 // EventRSVPType defines the GraphQL event RSVP type
 var EventRSVPType = graphql.NewObject(graphql.ObjectConfig{
-	Name: "eventRSVP",
+	Name: "EventRSVP",
 	Fields: graphql.Fields{
 		"user_id":  &graphql.Field{Type: graphql.ID},
 		"event_id": &graphql.Field{Type: graphql.ID},
@@ -49,7 +49,7 @@ var EventRSVPType = graphql.NewObject(graphql.ObjectConfig{
 
 // EventRSVPUserType defines the GraphQL event RSVP user type
 var EventRSVPUserType = graphql.NewObject(graphql.ObjectConfig{
-	Name: "eventRSVPUser",
+	Name: "EventRSVPUser",
 	Fields: graphql.Fields{
 		"user": &graphql.Field{Type: UserType},
 		"rsvp": &graphql.Field{Type: graphql.String},
@@ -58,7 +58,7 @@ var EventRSVPUserType = graphql.NewObject(graphql.ObjectConfig{
 
 // GroupType defines the GraphQL group type
 var GroupType = graphql.NewObject(graphql.ObjectConfig{
-	Name: "group",
+	Name: "Group",
 	Fields: graphql.Fields{
 		"id":          &graphql.Field{Type: graphql.ID},
 		"name":        &graphql.Field{Type: graphql.String},
@@ -71,7 +71,7 @@ var GroupType = graphql.NewObject(graphql.ObjectConfig{
 
 // GroupMembership defines the GraphQL type for group-user linking
 var GroupMembership = graphql.NewObject(graphql.ObjectConfig{
-	Name: "groupMembership",
+	Name: "GroupMembership",
 	Fields: graphql.Fields{
 		"group_id": &graphql.Field{Type: graphql.ID},
 		"user_id":  &graphql.Field{Type: graphql.ID},
@@ -82,7 +82,7 @@ var GroupMembership = graphql.NewObject(graphql.ObjectConfig{
 
 // GroupPermission defines the GraphQL type for user's permissions within a group
 var GroupPermission = graphql.NewObject(graphql.ObjectConfig{
-	Name: "groupPermission",
+	Name: "GroupPermission",
 	Fields: graphql.Fields{
 		"can_read":                &graphql.Field{Type: graphql.Boolean},
 		"can_read_members":        &graphql.Field{Type: graphql.Boolean},
@@ -97,7 +97,7 @@ var GroupPermission = graphql.NewObject(graphql.ObjectConfig{
 
 // UserGroup defines the GraphQL type for user's groups
 var UserGroup = graphql.NewObject(graphql.ObjectConfig{
-	Name: "userGroup",
+	Name: "UserGroup",
 	Fields: graphql.Fields{
 		"id":          &graphql.Field{Type: graphql.ID},
 		"name":        &graphql.Field{Type: graphql.String},
@@ -110,7 +110,7 @@ var UserGroup = graphql.NewObject(graphql.ObjectConfig{
 
 // UserType defines the GraphQL user type
 var UserType = graphql.NewObject(graphql.ObjectConfig{
-	Name: "user",
+	Name: "User",
 	Fields: graphql.Fields{
 		"id":             &graphql.Field{Type: graphql.ID},
 		"name":           &graphql.Field{Type: graphql.String},
@@ -131,12 +131,12 @@ var UserType = graphql.NewObject(graphql.ObjectConfig{
 
 // MeType defines the GraphQL type for the current user
 var MeType = graphql.NewObject(graphql.ObjectConfig{
-	Name: "me",
+	Name: "Me",
 })
 
 // UserSessionType defines the GraphQL user session type
 var UserSessionType = graphql.NewObject(graphql.ObjectConfig{
-	Name: "userSession",
+	Name: "UserSession",
 	Fields: graphql.Fields{
 		"key":  &graphql.Field{Type: graphql.String},
 		"user": &graphql.Field{Type: UserType},
@@ -145,7 +145,7 @@ var UserSessionType = graphql.NewObject(graphql.ObjectConfig{
 
 // RoleType defines the GraphQL role type
 var RoleType = graphql.NewObject(graphql.ObjectConfig{
-	Name: "role",
+	Name: "Role",
 	Fields: graphql.Fields{
 		"id":          &graphql.Field{Type: graphql.String},
 		"group_id":    &graphql.Field{Type: graphql.String},
@@ -157,7 +157,7 @@ var RoleType = graphql.NewObject(graphql.ObjectConfig{
 
 // MutationResponseType defines the response structures that the mutations use
 var MutationResponseType = graphql.NewObject(graphql.ObjectConfig{
-	Name: "mutationResponse",
+	Name: "MutationResponse",
 	Fields: graphql.Fields{
 		"ref_id": &graphql.Field{Type: graphql.String},
 	},
