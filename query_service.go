@@ -30,6 +30,7 @@ func (s *QueryService) getOne(model, id string) (map[string]interface{}, error) 
 	url := s.url(fmt.Sprintf("%s/%s", model, id))
 
 	client := &http.Client{Timeout: time.Second * 10}
+	log.Println("Sending GET request to", url)
 	resp, err := client.Get(url)
 	if err != nil {
 		return nil, errors.Wrap(err, fmt.Sprintf("Request to get %s failed", url))
@@ -53,6 +54,7 @@ func (s *QueryService) getAll(model string) ([]interface{}, error) {
 	url := s.url(model)
 
 	client := &http.Client{Timeout: time.Second * 10}
+	log.Println("Sending GET request to", url)
 	resp, err := client.Get(url)
 	if err != nil {
 		return nil, errors.Wrap(err, fmt.Sprintf("Request to get %s failed", url))
