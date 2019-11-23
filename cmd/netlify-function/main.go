@@ -12,7 +12,6 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/graphql-go/graphql"
-	"github.com/shjp/shjp-auth/redis"
 	gateway "github.com/shjp/shjp-gateway"
 )
 
@@ -43,7 +42,6 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 	queueHost := os.Getenv("QUEUE_URL")
 	queueUser := os.Getenv("QUEUE_USER")
 	queueExchange := os.Getenv("QUEUE_EXCHANGE")
-	redisHost := os.Getenv("REDIS_URL")
 
 	queryService, err := gateway.NewQueryService(daoHost)
 	if err != nil {
@@ -55,15 +53,7 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 		log.Fatalf("Failed instantiating a mutation service: %s", err)
 		return formatResponse(http.StatusInternalServerError, "Error init mutation service"), err
 	}
-	authService, err := gateway.NewAuthService(daoHost+"/users/search", &redis.Options{
-		Network: "tcp",
-		Address: redisHost,
-	})
-	if err != nil {
-		log.Fatalf("Failed instantiating an auth service: %s", err)
-		return formatResponse(http.StatusInternalServerError, "Error init auth service"), err
-	}
-	schema, err := gateway.ConfigSchema(queryService, mutationService, authService)
+	schema, err := gateway.ConfigSchema(queryService, mutationService, nil)
 	if err != nil {
 		log.Fatalf("Failed configuring schema: %v", err)
 		return formatResponse(http.StatusInternalServerError, "Error init GraphQL schema"), err
