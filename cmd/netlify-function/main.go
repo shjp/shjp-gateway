@@ -38,6 +38,11 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 		log.Println("Auth token not found")
 	}
 
+	var requestString string
+	if request.HTTPMethod == http.MethodOptions {
+		return formatResponse(http.StatusOK, "ok"), nil
+	}
+
 	daoHost := os.Getenv("DAO_URL")
 	queueHost := os.Getenv("QUEUE_URL")
 	queueUser := os.Getenv("QUEUE_USER")
@@ -53,15 +58,11 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 		log.Fatalf("Failed instantiating a mutation service: %s", err)
 		return formatResponse(http.StatusInternalServerError, "Error init mutation service"), err
 	}
+
 	schema, err := gateway.ConfigSchema(queryService, mutationService, nil)
 	if err != nil {
 		log.Fatalf("Failed configuring schema: %v", err)
 		return formatResponse(http.StatusInternalServerError, "Error init GraphQL schema"), err
-	}
-
-	var requestString string
-	if request.HTTPMethod == http.MethodOptions {
-		return formatResponse(http.StatusOK, "ok"), nil
 	}
 
 	if request.HTTPMethod == http.MethodGet {
