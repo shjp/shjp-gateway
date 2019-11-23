@@ -44,22 +44,14 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 	}
 
 	daoHost := os.Getenv("DAO_URL")
-	queueHost := os.Getenv("QUEUE_URL")
-	queueUser := os.Getenv("QUEUE_USER")
-	queueExchange := os.Getenv("QUEUE_EXCHANGE")
 
 	queryService, err := gateway.NewQueryService(daoHost)
 	if err != nil {
 		log.Fatalf("Failed instantiating a query service: %s", err)
 		return formatResponse(http.StatusInternalServerError, "Error init query service"), err
 	}
-	mutationService, err := gateway.NewMutationService(queueHost, queueUser, queueExchange)
-	if err != nil {
-		log.Fatalf("Failed instantiating a mutation service: %s", err)
-		return formatResponse(http.StatusInternalServerError, "Error init mutation service"), err
-	}
 
-	schema, err := gateway.ConfigSchema(queryService, mutationService, nil)
+	schema, err := gateway.ConfigSchema(queryService, nil, nil)
 	if err != nil {
 		log.Fatalf("Failed configuring schema: %v", err)
 		return formatResponse(http.StatusInternalServerError, "Error init GraphQL schema"), err
