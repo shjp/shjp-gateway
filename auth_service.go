@@ -1,7 +1,6 @@
 package gateway
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 
@@ -10,7 +9,6 @@ import (
 	auth "github.com/shjp/shjp-auth"
 	"github.com/shjp/shjp-auth/email"
 	core "github.com/shjp/shjp-core"
-	"github.com/shjp/shjp-core/model"
 )
 
 // AuthService manages auth requests
@@ -40,23 +38,18 @@ func (s *AuthService) Authenticate(token string) (*auth.UserSession, error) {
 		return nil, errors.Wrap(err, "Error creating the session client")
 	}
 
-	raw, err := sessionClient.Get(token)
+	user, err := sessionClient.Get(token)
 	if err != nil {
 		return nil, errors.Wrap(err, "Error retrieving user session")
 	}
 
-	if raw == nil {
+	if user == nil {
 		return nil, errors.Wrap(err, "User session doesn't exist")
-	}
-
-	var u model.User
-	if err = json.Unmarshal(raw, &u); err != nil {
-		return nil, errors.Wrap(err, "Error unmarshaling to user object")
 	}
 
 	return &auth.UserSession{
 		Key:  token,
-		User: u,
+		User: *user,
 	}, nil
 }
 

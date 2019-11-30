@@ -12,6 +12,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/graphql-go/graphql"
+	"github.com/shjp/shjp-auth/jwt"
 	gateway "github.com/shjp/shjp-gateway"
 )
 
@@ -47,11 +48,17 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 
 	queryService, err := gateway.NewQueryService(daoHost)
 	if err != nil {
-		log.Fatalf("Failed instantiating a query service: %s", err)
+		log.Fatalf("Failed instantiating the query service: %s", err)
 		return formatResponse(http.StatusInternalServerError, "Error init query service"), err
 	}
 
-	schema, err := gateway.ConfigSchema(queryService, nil, nil)
+	authService, err := gateway.NewAuthService(daoHost, &jwt.Options{})
+	if err != nil {
+		log.Fatalf("Failed instantiating the auth service: %s", err)
+		return formatResponse(http.StatusInternalServerError, "Error init auth service"), err
+	}
+
+	schema, err := gateway.ConfigSchema(queryService, nil, authService)
 	if err != nil {
 		log.Fatalf("Failed configuring schema: %v", err)
 		return formatResponse(http.StatusInternalServerError, "Error init GraphQL schema"), err
