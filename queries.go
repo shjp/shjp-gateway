@@ -86,3 +86,10 @@ func queryMeField(a *AuthService) *graphql.Field {
 		Resolve: me(a),
 	}
 }
+
+func queryMassFiles(s *QueryService) *graphql.Field {
+	return &graphql.Field{
+		Type:    graphql.NewList(MassFileType),
+		Resolve: queryAllResolver(s, "mass_files"),
+	}
+}

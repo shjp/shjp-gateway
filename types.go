@@ -155,6 +155,18 @@ var RoleType = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
+// MassFileType defines the GraphQL mass file type
+var MassFileType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "MassFile",
+	Fields: graphql.Fields{
+		"id":   &graphql.Field{Type: graphql.String},
+		"type": &graphql.Field{Type: graphql.String},
+		"name": &graphql.Field{Type: graphql.String},
+		"date": &graphql.Field{Type: graphql.String},
+		"url":  &graphql.Field{Type: graphql.String},
+	},
+})
+
 // MutationResponseType defines the response structures that the mutations use
 var MutationResponseType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "MutationResponse",
